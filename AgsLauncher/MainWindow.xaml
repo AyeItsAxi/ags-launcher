@@ -8,23 +8,49 @@
         WindowStartupLocation="CenterScreen"
         ContentRendered="Window_ContentRendered"
         Title="Avery Game Launcher" Height="600" Width="1080"
-        WindowStyle="SingleBorderWindow">
-    <Grid Background="#FF100C0C" Margin="0,-18,0,0">
-        <Label x:Name="GameTitleLabel" Content="Welcome to the Avery Game launcher!" Margin="0,10,0,0" FontFamily="Corbel Light" FontSize="40" FontWeight="Normal" FontStyle="Normal" Background="Transparent" Foreground="White" HorizontalAlignment="Center" Width="626" Height="55" VerticalAlignment="Top"/>
-        <TextBlock Name="VersionText" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20" Foreground="White" Margin="0, 0, 5, 0"/>
-        <Button Name="PlayButton" Content="Checking For Updates" Click="PlayButton_Click" Height="60" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="0, 0, 0, 15" VerticalAlignment="Bottom" HorizontalAlignment="Center" MinWidth="150" Background="#FF1D0037" BorderBrush="#FF1D0037" Padding="10,1,10,1">
+        WindowStyle="None">
+    <Grid Background="#FF100C0C">
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="GameTitleLabel" Content="Welcome to the Avery Game launcher!" Margin="0,30,0,0" FontFamily="Corbel Light" FontSize="40" FontWeight="Normal" FontStyle="Normal" Background="Transparent" Foreground="White" HorizontalAlignment="Center" Width="626" Height="55" VerticalAlignment="Top"/>
+        <TextBlock Name="VersionText" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20" Foreground="White" Margin="0, 0, 5, 0" Grid.Column="1" Height="27" Width="0"/>
+        <Button Name="PlayButton" Content="Checking For Updates" Click="PlayButton_Click" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="378,0,0,20" MinWidth="150" Background="#FF100C0C" BorderBrush="#FF5A00AB" Padding="10,1,10,1" HorizontalAlignment="Left" Width="308" Height="60" VerticalAlignment="Bottom">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="15"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FF590B85"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </Button.Resources>
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="310" Height="60" CornerRadius="2" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF8EBA8A"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF100C0C" To="#FF5A00AB"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF5A00AB" To="#FF100C0C"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
-        <WebBrowser Margin="-52,102,-52,164" Source="http://ags-api.allinstaller.xyz/ui/" RenderTransformOrigin="0.5,0.5" ScrollViewer.VerticalScrollBarVisibility="Hidden"  ScrollViewer.HorizontalScrollBarVisibility="Hidden"  OverridesDefaultStyle="False">
+        <WebBrowser Margin="-52,102,-52,164" Source="http://ags-api.allinstaller.xyz/ui/" RenderTransformOrigin="0.5,0.5" ScrollViewer.VerticalScrollBarVisibility="Hidden"  ScrollViewer.HorizontalScrollBarVisibility="Hidden"  OverridesDefaultStyle="False" Grid.ColumnSpan="2">
             <WebBrowser.Effect>
                 <BlurEffect/>
             </WebBrowser.Effect>
@@ -33,7 +59,6 @@
                     <Setter Property="CornerRadius" Value="10"/>
                 </Style>
             </WebBrowser.Resources>
-
         </WebBrowser>
         <Button x:Name="UninstallButton" Content="Uninstall" Height="48" FontSize="28" FontWeight="Bold" Margin="3,0,0,14" VerticalAlignment="Bottom"  HorizontalAlignment="Left" MinWidth="150" Background="#FF1D0037" BorderBrush="#FF1D0037" Padding="10,1,10,1" RenderTransformOrigin="0.5,0.5" Width="153" IsEnabled="False" Foreground="#FF1D0037" Visibility="Hidden">
             <Button.Resources>
@@ -45,20 +70,156 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button x:Name="Exit_Button" Content="Exit" Click="Exit_Click" Height="46" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="3,0,0,64" VerticalAlignment="Bottom"  HorizontalAlignment="Left" MinWidth="150" Background="#FF1D0037" BorderBrush="#FF1D0037" Padding="10,1,10,1" RenderTransformOrigin="0.5,0.5" Width="151">
+        <Button x:Name="Exit_Button" Content="Exit" Click="Exit_Click" Height="46" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="3,0,0,63" VerticalAlignment="Bottom"  HorizontalAlignment="Left" MinWidth="150" Background="#FF100C0C" BorderBrush="White" Padding="10,1,10,1" RenderTransformOrigin="0.5,0.5" Width="151">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="15"/>
                 </Style>
             </Button.Resources>
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="153" Height="46" CornerRadius="2" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF8EBA8A"/>
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF100C0C" To="#FF5A00AB"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF5A00AB" To="#FF100C0C"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
-        <Button x:Name="Repair" Content="Repair" Click="Repair_Click" Height="46" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="3,0,0,10" VerticalAlignment="Bottom"  HorizontalAlignment="Left" MinWidth="150" Background="#FF1D0037" BorderBrush="#FF1D0037" Padding="10,1,10,1" RenderTransformOrigin="0.5,0.5" Width="151">
+        <Button x:Name="Repair" Content="Repair" Click="Repair_Click" Height="46" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="3,0,0,10" VerticalAlignment="Bottom"  HorizontalAlignment="Left" MinWidth="150" Background="#FF100C0C" BorderBrush="#FF5A00AB" Padding="10,1,10,1" RenderTransformOrigin="0.5,0.5" Width="151">
             <Button.Resources>
-                <Style TargetType="{x:Type Border}">
+                <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="15"/>
                 </Style>
             </Button.Resources>
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="153" Height="46" CornerRadius="2" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF8EBA8A"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF100C0C" To="#FF5A00AB"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF5A00AB" To="#FF100C0C"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
+        <Button Margin="0,0,0,556" Opacity="0.205" Background="#FF100C0C" MouseDown="drag_MouseDown" Visibility="Hidden">
+
+        </Button>
+        <Button Content="r" Margin="0,10,16,0" VerticalAlignment="Top" Height="20" Click="close" FontFamily="Marlett" Background="#FF100C0C" BorderBrush="#FF5A00AB" Foreground="White" Padding="0,0,0,0" HorizontalAlignment="Right" Width="20">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="20" Height="20" CornerRadius="2" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF8EBA8A"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF100C0C" To="#FF5A00AB"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF5A00AB" To="#FF100C0C"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="2" Margin="0,10,41,0" VerticalAlignment="Top" FontFamily="Marlett" Height="20" Background="#FF100C0C" Foreground="White" BorderBrush="#FF33005F" Click="minimize" HorizontalAlignment="Right" Width="20">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="20" Height="20" CornerRadius="2" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#FF8EBA8A"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF100C0C" To="#FF5A00AB"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" Duration="00:00:00.15" From="#FF5A00AB" To="#FF100C0C"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" HorizontalAlignment="Left" Margin="3,0,0,63" Width="151" CornerRadius="7" Height="46" VerticalAlignment="Bottom"/>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" HorizontalAlignment="Left" Margin="3,0,0,10" Width="151" CornerRadius="7" Height="46" VerticalAlignment="Bottom"/>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" Margin="376,0,0,20" CornerRadius="7" HorizontalAlignment="Left" Width="310" Height="60" VerticalAlignment="Bottom"/>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" Height="20" Margin="0,10,16,0" CornerRadius="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20"/>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" Height="20" Margin="0,10,41,0" CornerRadius="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20"/>
+
+
+
 
     </Grid>
 </Window>

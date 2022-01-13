@@ -5,6 +5,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Windows;
+using System.Windows.Input;
+using DiscordRPC;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace GameLauncher
 {
@@ -34,9 +37,14 @@ namespace GameLauncher
         private long gamefoldersize;
         private long gameexesize;
         int repairtime = 0;
+        bool maximised = false;
+       
+        
 
 
         private LauncherStatus _status;
+        private DiscordRpcClient client;
+
         internal LauncherStatus Status
         {
             get => _status;
@@ -66,6 +74,11 @@ namespace GameLauncher
             }
         }
 
+        void Initialize()
+        {
+           
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,11 +91,6 @@ namespace GameLauncher
             if (File.Exists(gameZip))
             {
                 gamesize = new FileInfo("1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip").Length;
-            }
-            if (File.Exists(gameFolder))
-            {
-                gamefoldersize = new FileInfo(gameFolder).Length;
-                gameexesize = new FileInfo(gameExe).Length;
             }
         }
 
@@ -105,15 +113,61 @@ namespace GameLauncher
 
         private void CheckForUpdates()
         {
+
+            /*
+           Create a Discord client
+           NOTE: 	If you are using Unity3D, you must use the full constructor and define
+                    the pipe connection.
+           */
+            client = new DiscordRpcClient("917581646302183554");
+
+            //Set the logger
+            client.Logger = new DiscordRPC.Logging.ConsoleLogger() { Level = DiscordRPC.Logging.LogLevel.Warning };
+
+            //Subscribe to events
+            client.OnReady += (sender, e) =>
+            {
+                Console.WriteLine("Received Ready from user {0}", e.User.Username);
+            };
+
+            client.OnPresenceUpdate += (sender, e) =>
+            {
+                Console.WriteLine("Received Update! {0}", e.Presence);
+            };
+
+            //Connect to the RPC
+            client.Initialize();
+
+            //Set the rich presence
+            //Call this as many times as you want and anywhere in your code.
+            client.SetPresence(new DiscordRPC.RichPresence()
+            {
+                Details = "Avery Game",
+                State = "In The Launcher",
+                Assets = new Assets()
+                {
+                    LargeImageKey = "image_large",
+                    LargeImageText = "Avery Game Launcher",
+                }
+            });
             if (Directory.Exists(gameFolder) && !File.Exists(versionFile))
             {
-                WebClient webClient = new WebClient();
-                Version onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1wfD44CyNOWy3wYE2u4OI0FDIRnYgMzl4"));
-                MessageBoxButton buttons = MessageBoxButton.OK;
-                MessageBoxResult result;
-                result = MessageBox.Show("An Unexpected Error Occurred And Was Fixed. The Launcher Will Now Restart.", "Error Occurred", buttons);
-                Process.Start("AgsLauncher.exe");
-                this.Close();
+                try
+                {
+
+                    WebClient webClient = new WebClient();
+                    Version onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1wfD44CyNOWy3wYE2u4OI0FDIRnYgMzl4"));
+                    MessageBoxButton buttons = MessageBoxButton.OK;
+                    MessageBoxResult result;
+                    result = MessageBox.Show("An Unexpected Error Occurred And Was Fixed. The Launcher Will Now Restart.", "Error Occurred", buttons);
+                    Process.Start("AgsLauncher.exe");
+                    this.Close();
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An Unexpected Error Occured: {ex}");
+                }
             }
 
             else if (File.Exists(versionFile))
@@ -203,9 +257,17 @@ namespace GameLauncher
         {
             if (File.Exists(gameExe) && Status == LauncherStatus.ready)
             {
+                new ToastContentBuilder()
+                .AddArgument("action", "viewConversation")
+                .AddArgument("conversationId", 9813)
+                .AddText("Game Launched")
+                .AddText("Game Has Been Launched Successfully!")
+                .Show(); 
                 ProcessStartInfo startInfo = new ProcessStartInfo(gameExe);
                 startInfo.WorkingDirectory = Path.Combine(rootPath, "WindowsNoEditor");
                 Process.Start(startInfo);
+                Process.Start("AgsLauncher.exe");
+               
 
                 Close();
             }
@@ -242,22 +304,77 @@ namespace GameLauncher
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            string message = "Are You Sure You Want To Exit? This Will Cancel Any Current Installs.";
-            string caption = "Exit Confirmation";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxResult result;
-            result = MessageBox.Show(message, caption, buttons);
+            if (Status == LauncherStatus.ready || Status == LauncherStatus.installable)
+            {
+                this.Close();
+            }
+            else
+            {
+                string message = "Are You Sure You Want To Exit? This Will Cancel Any Current Installs.";
+                string caption = "Exit Confirmation";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                MessageBoxResult result;
+                result = MessageBox.Show(message, caption, buttons);
 
-            if (result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.Close();
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        private void close(object sender, RoutedEventArgs e)
+        {
+            if (Status == LauncherStatus.ready)
             {
                 this.Close();
             }
             else
             {
 
+
+                string message = "Are You Sure You Want To Exit? This Will Cancel Any Current Installs.";
+                string caption = "Exit Confirmation";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                MessageBoxResult result;
+                result = MessageBox.Show(message, caption, buttons);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.Close();
+                }
+                else
+                {
+
+                }
             }
         }
 
+        private void minimize(object sender, RoutedEventArgs e)
+        {
+            if (maximised == false)
+            {
+                WindowState = WindowState.Maximized;
+                maximised = true;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+                maximised = false;
+            }
+        }
+
+        private void drag_MouseDown(object sender, MouseButtonEventArgs e)
+
+        {
+
+            this.DragMove();
+
+        }
 
 
         /*  private void Uninstall_Click(object sender, RoutedEventArgs e)
