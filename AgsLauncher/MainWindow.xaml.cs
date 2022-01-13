@@ -142,7 +142,7 @@ namespace GameLauncher
             //Call this as many times as you want and anywhere in your code.
             client.SetPresence(new DiscordRPC.RichPresence()
             {
-                Details = "Avery Game",
+                Details = "",
                 State = "In The Launcher",
                 Assets = new Assets()
                 {
