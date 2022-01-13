@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Input;
 using DiscordRPC;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.Windows.Data;
+using System.Threading;
 
 namespace GameLauncher
 {
@@ -28,18 +30,18 @@ namespace GameLauncher
 
     public partial class MainWindow : Window
     {
+#pragma warning disable 0649 //you can comment this out if you want its just to fix 1 and 2
         private string rootPath;
         private string versionFile;
         private string gameZip;
         private string gameExe;
         private string gameFolder;
         private long gamesize;
-        private long gamefoldersize;
-        private long gameexesize;
+        private long gamefoldersize; //1
+        private long gameexesize; //2
         int repairtime = 0;
         bool maximised = false;
-       
-        
+
 
 
         private LauncherStatus _status;
@@ -75,50 +77,17 @@ namespace GameLauncher
         }
 
         void Initialize()
-        {
-           
+        { 
         }
 
         public MainWindow()
         {
             InitializeComponent();
-
-            rootPath = Directory.GetCurrentDirectory();
-            versionFile = Path.Combine(rootPath, "Version.txt");
-            gameZip = Path.Combine(rootPath, "1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip");
-            gameExe = Path.Combine(rootPath, "WindowsNoEditor", "AveryGame.exe");
-            gameFolder = Path.Combine(rootPath, "WindowsNoEditor");
-            if (File.Exists(gameZip))
-            {
-                gamesize = new FileInfo("1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip").Length;
-            }
-        }
-
-        /*
-        {
-            string message = "Are You Sure You Want To Exit?";
-            string caption = "Exit";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxResult result;
-            result = MessageBox.Show(message, caption, buttons);
-            if (result == MessageBoxResult.Yes)
-            {
-                this.Close();
-            }
-            else if (result == MessageBoxResult.No)
-            {
-
-            }
-        } */
-
-        private void CheckForUpdates()
-        {
-
             /*
-           Create a Discord client
-           NOTE: 	If you are using Unity3D, you must use the full constructor and define
-                    the pipe connection.
-           */
+          Create a Discord client
+          NOTE: 	If you are using Unity3D, you must use the full constructor and define
+                   the pipe connection.
+          */
             client = new DiscordRpcClient("917581646302183554");
 
             //Set the logger
@@ -147,9 +116,51 @@ namespace GameLauncher
                 Assets = new Assets()
                 {
                     LargeImageKey = "image_large",
-                    LargeImageText = "Avery Game Launcher",
+                    LargeImageText = "Avery Game 4.2",
                 }
             });
+            this.DataContext = this;
+            rootPath = Directory.GetCurrentDirectory();
+            versionFile = Path.Combine(rootPath, "Version.txt");
+            gameZip = Path.Combine(rootPath, "1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip");
+            gameExe = Path.Combine(rootPath, "AveryGame\\WindowsNoEditor\\AveryGame.exe");
+            gameFolder = Path.Combine(rootPath, "WindowsNoEditor");
+            if (File.Exists(gameZip))
+            {
+                gamesize = new FileInfo("1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip").Length;
+            }
+            }
+
+        /*public string test = "a string";
+        public string Test
+        {
+            get { return test; }
+            set { test = value; }
+        }
+        */
+
+
+        /*
+        {
+            string message = "Are You Sure You Want To Exit?";
+            string caption = "Exit";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxResult result;
+            result = MessageBox.Show(message, caption, buttons);
+            if (result == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        } */
+
+        private void CheckForUpdates()
+        {
+
+
             if (Directory.Exists(gameFolder) && !File.Exists(versionFile))
             {
                 try
@@ -201,8 +212,6 @@ namespace GameLauncher
             }
         }
 
-
-
         private void InstallGameFiles(bool _isUpdate, Version _onlineVersion)
         {
             try
@@ -226,9 +235,10 @@ namespace GameLauncher
                 Status = LauncherStatus.failed;
                 MessageBox.Show($"Error installing game files: {ex}");
             }
+            string ClientUsername = client.CurrentUser.Username.ToString();
         }
 
-        private void DownloadGameCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        public void DownloadGameCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
             try
             {
@@ -253,23 +263,25 @@ namespace GameLauncher
             CheckForUpdates();
         }
 
+        private void ClientUsername(object sender, EventArgs e)
+        {
+            client.CurrentUser.Username.ToString();
+        }
+
         private void PlayButton_Click(object sender, RoutedEventArgs e)
+
         {
             if (File.Exists(gameExe) && Status == LauncherStatus.ready)
             {
-                new ToastContentBuilder()
-                .AddArgument("action", "viewConversation")
-                .AddArgument("conversationId", 9813)
-                .AddText("Game Launched")
-                .AddText("Game Has Been Launched Successfully!")
-                .Show(); 
                 ProcessStartInfo startInfo = new ProcessStartInfo(gameExe);
-                startInfo.WorkingDirectory = Path.Combine(rootPath, "WindowsNoEditor");
-                Process.Start(startInfo);
-                Process.Start("AgsLauncher.exe");
-               
-
-                Close();
+                startInfo.WorkingDirectory = Path.Combine(rootPath, "\\AveryGame\\WindowsNoEditor");
+                Process.Start(Path.Combine(rootPath, gameExe));
+                this.WindowState = WindowState.Minimized;
+                new ToastContentBuilder()
+                       .AddArgument("action", "viewConversation")
+                       .AddArgument("conversationId", 9813)
+                       .AddText("Avery Game has been started successfully!")
+                       .Show();
             }
             else if (Status == LauncherStatus.failed)
             {
@@ -315,7 +327,6 @@ namespace GameLauncher
                 MessageBoxButton buttons = MessageBoxButton.YesNo;
                 MessageBoxResult result;
                 result = MessageBox.Show(message, caption, buttons);
-
                 if (result == MessageBoxResult.Yes)
                 {
                     this.Close();
@@ -329,28 +340,46 @@ namespace GameLauncher
 
         private void close(object sender, RoutedEventArgs e)
         {
-            if (Status == LauncherStatus.ready)
+            if (Status == LauncherStatus.downloadingUpdate || Status == LauncherStatus.downloadingGame)
             {
-                this.Close();
+                if (Status == LauncherStatus.downloadingUpdate)
+                {
+                    string msg1 = "AveryGame is currently updating. Are you sure you would like to exit?";
+                    string text1 = "Warning";
+                    MessageBoxButton buttons1 = MessageBoxButton.YesNo;
+                    MessageBoxImage icon1 = MessageBoxImage.Warning;
+                    MessageBoxResult result1;
+                    result1 = MessageBox.Show(msg1, text1, buttons1, icon1);
+                    if (result1 == MessageBoxResult.Yes)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+
+                    }
+                }
+                if (Status == LauncherStatus.downloadingGame)
+                {
+                    string msg1 = "AveryGame is currently downloading. Are you sure you would like to exit?";
+                    string text1 = "Warning";
+                    MessageBoxButton buttons1 = MessageBoxButton.YesNo;
+                    MessageBoxImage icon1 = MessageBoxImage.Warning;
+                    MessageBoxResult result1;
+                    result1 = MessageBox.Show(msg1, text1, buttons1, icon1);
+                    if (result1 == MessageBoxResult.Yes)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+
+                    }
+                }
             }
             else
             {
-
-
-                string message = "Are You Sure You Want To Exit? This Will Cancel Any Current Installs.";
-                string caption = "Exit Confirmation";
-                MessageBoxButton buttons = MessageBoxButton.YesNo;
-                MessageBoxResult result;
-                result = MessageBox.Show(message, caption, buttons);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    this.Close();
-                }
-                else
-                {
-
-                }
+                this.Close();  
             }
         }
 
@@ -367,13 +396,15 @@ namespace GameLauncher
                 maximised = false;
             }
         }
+        
+        private void minToTB(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
 
         private void drag_MouseDown(object sender, MouseButtonEventArgs e)
-
         {
-
             this.DragMove();
-
         }
 
 
@@ -457,29 +488,66 @@ namespace GameLauncher
             }
             else if (File.Exists(gameZip) && gamesize < 2000000000)
             {
-
-                File.Delete(gameZip);
-                MessageBoxButton buttons = MessageBoxButton.OK;
-                MessageBoxResult result;
-                result = MessageBox.Show("An Unexpected Error Occurred And Was Fixed. The Launcher Will Now Restart.", "Error Occurred", buttons);
-                Process.Start("AgsLauncher.exe");
-                this.Close();
+                try
+                {
+                    File.Delete(gameZip);
+                    MessageBoxButton buttons = MessageBoxButton.OK;
+                    MessageBoxResult result;
+                    result = MessageBox.Show("An Unexpected Error Occurred And Was Fixed. The Launcher Will Now Restart.", "Error Occurred", buttons);
+                    Process.Start("AgsLauncher.exe");
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Fatal Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else if (Directory.Exists(gameFolder) && gamefoldersize < 2000000000)
             {
-                MessageBoxButton buttons = MessageBoxButton.OK;
-                MessageBoxResult result;
-                result = MessageBox.Show("An Unexpected Error Occurred With The Game Install. Please Delete The Game Folder \"WindowsNoEditor\" And The \"Version.txt\" File, And Restart The Launcher.", "Error Occurred", buttons);
-                this.Close();
+                try
+                {
+
+                    MessageBoxButton buttons = MessageBoxButton.OK;
+                    MessageBoxResult result;
+                    result = MessageBox.Show("An Unexpected Error Occurred With The Game Install. Please Delete The Game Folder \"WindowsNoEditor\" And The \"Version.txt\" File, And Restart The Launcher.", "Error Occurred", buttons);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Fatal Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else if (File.Exists(gameExe) && gameexesize < 150000)
             {
-                MessageBoxButton buttons = MessageBoxButton.OK;
-                MessageBoxResult result;
-                result = MessageBox.Show("An Unexpected Error Occurred With The Game Install. Please Delete The Game Folder \"WindowsNoEditor\" And The \"Version.txt\" File, And Restart The Launcher.", "Error Occurred", buttons);
-                this.Close();
+                try
+                {
+                    MessageBoxButton buttons = MessageBoxButton.OK;
+                    MessageBoxResult result;
+                    result = MessageBox.Show("An Unexpected Error Occurred With The Game Install. Please Delete The Game Folder \"WindowsNoEditor\" And The \"Version.txt\" File, And Restart The Launcher.", "Error Occurred", buttons);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Fatal Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
+        //PLEASE DONT CHANGE A SINGLE THING ABOUT THIS CODE BELOW
+        public string Test1()
+        {
+            Thread.Sleep(1000);
+            if (this.client.CurrentUser == null)
+            {
+                return "😊";
+            }
+            return this.client.CurrentUser.Username;
+        }
+        public string Test
+        {
+            get { return Test1(); }
+            set { value = Test1(); }
+        }
+        //THE CODE ABOVE IS WHAT I GOT WORKING AFTER 3 HOURS OF TRYING
     }
 
 
