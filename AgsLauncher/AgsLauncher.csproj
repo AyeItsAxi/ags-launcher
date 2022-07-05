@@ -1,62 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>images\Icon.ico</ApplicationIcon>
-    <Authors>AveryMadness, 1-24-9</Authors>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>images\Icon.ico</ApplicationIcon>
+		<Authors>AveryMadness, 1-24-9</Authors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="images\Icon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="images\Icon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <COMReference Include="MSHTML">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>4</VersionMajor>
-      <Guid>3050f1c5-98b5-11cf-bb82-00aa00bdce0b</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
+	<ItemGroup>
+		<COMReference Include="MSHTML">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>4</VersionMajor>
+			<Guid>3050f1c5-98b5-11cf-bb82-00aa00bdce0b</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DiscordRichPresence" Version="1.0.175" />
-    <PackageReference Include="EcoCore" Version="7.0.0.13783" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.2" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <Resource Include="images\Icon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DiscordRichPresence" Version="1.0.175" />
+		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.2" />
+	</ItemGroup>
 
 
 
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="images\Icon.ico" />
+	</ItemGroup>
 
 
 
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>

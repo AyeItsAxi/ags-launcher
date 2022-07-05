@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using DiscordRPC;
 using Microsoft.Toolkit.Uwp.Notifications;
-using System.Windows.Data;
 using System.Threading;
 
 namespace GameLauncher
@@ -77,12 +76,13 @@ namespace GameLauncher
         }
 
         void Initialize()
-        { 
+        {
         }
 
         public MainWindow()
         {
             InitializeComponent();
+            WebSource.Source = new Uri((Environment.CurrentDirectory + "\\ReqDocs\\index.html"));
             /*
           Create a Discord client
           NOTE: 	If you are using Unity3D, you must use the full constructor and define
@@ -129,7 +129,7 @@ namespace GameLauncher
             {
                 gamesize = new FileInfo("1i9qQNqWOlQcdrZ0qD3NU7WzHKW4h54U_.zip").Length;
             }
-            }
+        }
 
         /*public string test = "a string";
         public string Test
@@ -379,7 +379,7 @@ namespace GameLauncher
             }
             else
             {
-                this.Close();  
+                this.Close();
             }
         }
 
@@ -396,7 +396,7 @@ namespace GameLauncher
                 maximised = false;
             }
         }
-        
+
         private void minToTB(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;

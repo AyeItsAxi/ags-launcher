@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Label Opacity="0" x:Name="GameTitleLabel" Content="Welcome to the Avery Game launcher!" Margin="0,30,0,0" FontFamily="Corbel Light" FontSize="40" FontWeight="Normal" FontStyle="Normal" Background="Transparent" Foreground="White" HorizontalAlignment="Center" Width="626" Height="55" VerticalAlignment="Top"/>
         <TextBlock Name="VersionText" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20" Foreground="White" Margin="0, 0, 5, 0" Grid.Column="1" Height="27" Width="0"/>
-        <Button Name="PlayButton" Content="Checking For Updates" Click="PlayButton_Click" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="378,0,0,20" MinWidth="150" Background="#FF100C0C" BorderBrush="#FF5A00AB" Padding="10,1,10,1" HorizontalAlignment="Left" Width="308" Height="60" VerticalAlignment="Bottom">
+        <Button Name="PlayButton" HorizontalContentAlignment="Center" Content="Checking For Updates" Click="PlayButton_Click" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="378,0,0,20" MinWidth="150" Background="#FF100C0C" BorderBrush="#FF5A00AB" Padding="10,1,10,1" HorizontalAlignment="Left" Width="308" Height="60" VerticalAlignment="Bottom">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="15"/>
@@ -50,7 +50,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <WebBrowser Margin="-52,102,-52,164" Source="http://1-24-9.xyz/ags" RenderTransformOrigin="0.5,0.5" ScrollViewer.VerticalScrollBarVisibility="Hidden"  ScrollViewer.HorizontalScrollBarVisibility="Hidden"  OverridesDefaultStyle="False" Grid.ColumnSpan="2">
+        <WebBrowser Name="WebSource" Margin="-52,102,-52,164" Source="http://1-24-9.xyz/ags" RenderTransformOrigin="0.5,0.5" ScrollViewer.VerticalScrollBarVisibility="Hidden"  ScrollViewer.HorizontalScrollBarVisibility="Hidden"  OverridesDefaultStyle="False" Grid.ColumnSpan="2">
             <WebBrowser.Effect>
                 <BlurEffect/>
             </WebBrowser.Effect>
@@ -147,9 +147,9 @@
         </Button>
         <Border BorderBrush="#FF5A00AB" BorderThickness="1" HorizontalAlignment="Left" Margin="5,0,0,113" Width="151" CornerRadius="7" Height="46" VerticalAlignment="Bottom" Opacity="0"/>
         <Border BorderBrush="#FF5A00AB" BorderThickness="1" HorizontalAlignment="Left" Margin="20,0,0,20" Width="160" CornerRadius="7" Height="60" VerticalAlignment="Bottom"/>
-        <Border BorderBrush="#FF5A00AB" BorderThickness="1" Margin="378,0,0,20" CornerRadius="7" HorizontalAlignment="Left" Width="308" Height="60" VerticalAlignment="Bottom"/>
+        <Border BorderBrush="#FF5A00AB" BorderThickness="1" Margin="378,0,0,20" CornerRadius="7" Height="60" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="308"/>
         <Rectangle HorizontalAlignment="Left" Margin="10,0,0,92" Width="156" Fill="#FF100C0C" Height="90" VerticalAlignment="Bottom"/>
-        <Border BorderThickness="100" Margin="-4535,-1,-4535,0" MouseDown="drag_MouseDown" Height="30" VerticalAlignment="Top" Background="Black" Opacity="100" BorderBrush="Black"/>
+        <Border BorderThickness="100" Margin="-4535,-23,-4535,0" MouseDown="drag_MouseDown" Height="52" VerticalAlignment="Top" Background="Black" Opacity="100" BorderBrush="Black"/>
         <Button Content="2" Margin="0,5,41,0" VerticalAlignment="Top" FontFamily="Marlett" Height="20" Background="#FF100C0C" Foreground="White" BorderBrush="#FF33005F" Click="minimize" HorizontalAlignment="Right" Width="20">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
