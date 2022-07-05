@@ -81,6 +81,12 @@ namespace GameLauncher
 
         public MainWindow()
         {
+            Directory.CreateDirectory("ReqDocs");
+            WebClient wc = new WebClient();
+            wc.DownloadFile("https://raw.githubusercontent.com/AyeItsAxi/ags-launcher/main/ReqDocs/ckb.html", "ReqDocs\\ckb.html");
+            wc.DownloadFile("https://raw.githubusercontent.com/AyeItsAxi/ags-launcher/main/ReqDocs/index.html", "ReqDocs\\index.html");
+            wc.DownloadFile("https://raw.githubusercontent.com/AyeItsAxi/ags-launcher/main/ReqDocs/cl.html", "ReqDocs\\cl.html");
+            wc.DownloadFile("https://raw.githubusercontent.com/AyeItsAxi/ags-launcher/main/ReqDocs/pepeyay.png", "ReqDocs\\pepeyay.png");
             InitializeComponent();
             WebSource.Source = new Uri((Environment.CurrentDirectory + "\\ReqDocs\\index.html"));
             /*
